@@ -1,5 +1,7 @@
 # Claude Code Skills for Empirical Research
 
+[![Agent Skills](https://img.shields.io/badge/agent%20skills-15-blue)](skills/)
+
 A collection of custom Claude Code skills designed for empirical research in economics and finance. These skills provide structured workflows for common academic research tasks.
 
 ## Installation
