@@ -1,0 +1,43 @@
+name: Update skill count badge
+
+# Keeps the README badge in sync with the number of skills/<name>/SKILL.md files.
+# Only fires on changes under skills/, so the README commit this makes cannot
+# retrigger the workflow.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'skills/**'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-badge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Recount skills and rewrite the badge
+        run: |
+          count=$(find skills -mindepth 2 -maxdepth 2 -name SKILL.md | wc -l | tr -d ' ')
+          echo "Found $count skills"
+          if [ "$count" -eq 0 ]; then
+            echo "Refusing to write a zero count — check the skills/ layout." >&2
+            exit 1
+          fi
+          sed -i -E "s|(badge/agent%20skills-)[0-9]+(-blue)|\1${count}\2|" README.md
+          grep -n 'badge/agent%20skills-' README.md
+
+      - name: Commit if the count changed
+        run: |
+          if git diff --quiet README.md; then
+            echo "Badge already accurate; nothing to commit."
+            exit 0
+          fi
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -am "Update skill count badge"
+          git push
