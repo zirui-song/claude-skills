@@ -13,6 +13,17 @@ cp *.md ~/.claude/commands/
 
 After installation, you can invoke any skill in Claude Code using `/skill-name` (e.g., `/robustness`).
 
+The `skills/` directory holds a second set in the newer **agent skill** format (a folder per
+skill, each with a `SKILL.md` and YAML frontmatter). Those install to a different location:
+
+```bash
+# Copy the agent skills to your Claude skills folder
+cp -R skills/* ~/.claude/skills/
+```
+
+Claude invokes these automatically when a task matches the skill's `description`; you can also
+call one by name. See [Agent Skills](#agent-skills-skills) below.
+
 ## Available Skills
 
 ### 1. Robustness (`/robustness`)
@@ -177,6 +188,49 @@ Project/
 ```
 
 ---
+
+## Agent Skills (`skills/`)
+
+Fifteen skills in the agent-skill format, aimed at the run-it-and-verify-it half of empirical
+work: executing pipelines, checking that reported numbers match the logs that produced them,
+and stress-testing a design before a referee does.
+
+### Empirical pipeline
+
+| Skill | Purpose |
+|-------|---------|
+| `table` | Regenerate one Stata table, check the log for `r(###)`, recompile, confirm page fit, then commit |
+| `refresh-pipeline` | Pre-flight, run, and verify a multi-stage Stata + Python pipeline |
+| `stata-preflight` | Catch the silent Stata failures: missing username path branch, `cap`-suppressed `esttab` |
+| `robustness-battery` | Referee-anticipating sweep across estimator, sample, controls, weights, clustering — plus a one-pass fixed-grid mode |
+| `spec-curve-sweep` | 200–500 specification sweep with a resumable runner, spec curve, and drafted online appendix |
+| `power-first` | First-stage F, effective N, MDE at 80% power, and the top two identification threats — reported *before* any coefficient is interpreted |
+
+### Verification
+
+| Skill | Purpose |
+|-------|---------|
+| `verify-claims` | Adversarial pass over a draft: every number and citation gets an exact `file:line` or is marked `UNVERIFIED` |
+| `verify-numbers-pipeline` | Make every number machine-checkable — YAML claim manifest, `verify_numbers.py`, `make verify`, pre-commit hook that blocks stale numbers |
+| `referee-panel` | Five parallel adversarial reviewers (identification, power, literature, provenance, independent replication) → one ranked threat memo |
+
+### LaTeX / Overleaf
+
+| Skill | Purpose |
+|-------|---------|
+| `sync-overleaf` | Push updated tables/figures to an Overleaf folder; pull and diff before editing any `.tex`, then verify the compile |
+| `overleaf` | Refresh local `.tex`/`.bib` against Overleaf so the agent never edits a stale copy |
+
+### Cross-model review
+
+| Skill | Purpose |
+|-------|---------|
+| `codex-review-plan` | Send a plan to Codex for a second opinion against the real codebase |
+| `review-codex-plan` | The reverse — critically review a Codex-authored plan |
+| `plan-debate` | Multi-round Claude ↔ Codex debate converging on a stronger plan |
+| `codex-bridge` | Shared mechanics for the three above (not invoked directly) |
+
+Paths, usernames, and example coefficients in these files are placeholders — swap in your own.
 
 ## Quick Reference
 
