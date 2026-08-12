@@ -311,7 +311,7 @@ Date: YYYY-MM-DD
 */
 
 *** Set up paths
-global repodir "/Users/zrsong/MIT Dropbox/Zirui Song/Research Projects/PROJECT_NAME"
+global repodir "/Users/YourName/Dropbox/Research Projects/PROJECT_NAME"
 global datadir "$repodir/Data"
 global cleandir "$datadir/Clean"
 global intdir "$datadir/Intermediate"
