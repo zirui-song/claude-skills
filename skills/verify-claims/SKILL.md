@@ -10,13 +10,17 @@ not after they catch something.
 
 ## Inputs (infer if obvious, otherwise ask)
 
-- Draft file path (`.tex`, `.md`, or a section of one).
+- Draft file path (`.tex`, `.md`, or a section of one), plus any companion documents that
+  quote the same results: the response letter, the online appendix, slides.
 - Where the underlying evidence lives: estimation logs, `results/` CSVs, do-files, source PDFs.
 
 ## Method
 
 Spawn a subagent whose **only** job is to find errors. Give it the draft and the evidence
 directories. It must not fix anything, praise anything, or summarize the argument.
+
+For a full paper or several documents, fan out: one subagent per section or document, then
+merge their lists. A single agent on a whole draft has run out of session before finishing.
 
 For every checkable claim in the draft, it returns one of:
 
@@ -37,6 +41,12 @@ Claim types to sweep:
    anything phrased as established that has no cite and no output file behind it.
 4. **Internal consistency** — same quantity quoted in abstract, text, and table; table N vs.
    text N; sign language ("increases") vs. the actual coefficient sign.
+5. **Cross-document consistency** — the paper, response letter, online appendix and slides
+   quote the same numbers, table/column references and sample; a dropped table leaves no
+   sentence still citing it.
+6. **Claimed changes** — anything a previous turn said was done (a table regenerated, a
+   number updated, a file edited): open the file on disk and confirm. A "done" that isn't on
+   disk is a MISMATCH.
 
 ## Output
 
@@ -50,7 +60,8 @@ Close with a count: `n VERIFIED / n MISMATCH / n UNVERIFIED`.
 
 ## Anti-patterns
 
-- Do not fix the prose in this pass. Show the diff first; the user decides.
+- Do not fix the prose in this pass. Show the diff first; the user decides. When fixes are
+  applied afterwards, list every edit as `file:line` so the user can find each one.
 - Do not mark something VERIFIED because it looks plausible or matches your memory of an
   earlier run. Open the file.
 - Do not soften an UNVERIFIED into "likely correct." The whole point is the honest label.

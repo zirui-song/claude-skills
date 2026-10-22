@@ -1,6 +1,6 @@
 ---
 name: plan-debate
-description: Use to run a multi-round cross-model debate on an implementation plan — Claude drafts, Codex (gpt-5.4) critiques against the real codebase, Claude rebuts and synthesizes, optional second Codex pass — converging on a stronger plan. Combines codex-review-plan and review-codex-plan. Trigger phrases include "debate this plan with Codex", "go back and forth with Codex on the plan", "have Claude and Codex argue out the plan".
+description: Use to run a multi-round cross-model debate on an implementation plan — Claude drafts, Codex critiques against the real codebase, Claude rebuts and synthesizes, optional second Codex pass — converging on a stronger plan. Combines codex-review-plan and review-codex-plan. Trigger phrases include "debate this plan with Codex", "go back and forth with Codex on the plan", "have Claude and Codex argue out the plan".
 ---
 
 # plan-debate (Claude ⇄ Codex, round-trip)
@@ -41,7 +41,7 @@ Codex) and `review-codex-plan` (Codex → Claude) — read all three first.
 
 ## Notes
 
-- Each Codex call uses a long Bash timeout (~600000 ms); `xhigh` is slow. For a
+- Each Codex call uses a long Bash timeout (~600000 ms); high effort is slow. For a
   faster debate, append `-c model_reasoning_effort=high` to the wrapper calls.
 - Codex runs **read-only** throughout — it cannot modify your files.
 - Keep chat output terse; full reviews stay in their temp files.

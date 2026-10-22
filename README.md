@@ -202,10 +202,10 @@ and stress-testing a design before a referee does.
 
 | Skill | Purpose |
 |-------|---------|
-| `table` | Regenerate one Stata table, check the log for `r(###)`, recompile, confirm page fit, then commit |
-| `refresh-pipeline` | Pre-flight, run, and verify a multi-stage Stata + Python pipeline |
+| `table` | Regenerate one Stata table, check the log for `r(###)`, recompile, check fit and float placement, preview the page, then commit — plus a table-by-table review loop |
+| `refresh-pipeline` | Pre-flight, run, and verify a multi-stage Stata + Python pipeline; uses the project's own runner and byte-compares outputs against a pre-run snapshot |
 | `stata-preflight` | Catch the silent Stata failures: missing username path branch, `cap`-suppressed `esttab` |
-| `robustness-battery` | Referee-anticipating sweep across estimator, sample, controls, weights, clustering — plus a one-pass fixed-grid mode |
+| `robustness-battery` | Referee-anticipating sweep across estimator, sample, controls, weights, clustering (all in Stata) — plus a one-pass named-grid mode and a what-if mode for single spec changes |
 | `spec-curve-sweep` | 200–500 specification sweep with a resumable runner, spec curve, and drafted online appendix |
 | `power-first` | First-stage F, effective N, MDE at 80% power, and the top two identification threats — reported *before* any coefficient is interpreted |
 
@@ -221,7 +221,7 @@ and stress-testing a design before a referee does.
 
 | Skill | Purpose |
 |-------|---------|
-| `sync-overleaf` | Push updated tables/figures to an Overleaf folder; pull and diff before editing any `.tex`, then verify the compile |
+| `sync-overleaf` | Get tables/figures into an Overleaf folder without clobbering web-editor edits; catch Dropbox conflicted copies; pull and diff before editing any `.tex`, then verify the compile |
 | `overleaf` | Refresh local `.tex`/`.bib` against Overleaf so the agent never edits a stale copy |
 
 ### Cross-model review

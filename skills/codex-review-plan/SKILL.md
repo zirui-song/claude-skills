@@ -1,6 +1,6 @@
 ---
 name: codex-review-plan
-description: Use after drafting an implementation or research plan (in plan mode, or a ~/.claude/plans/ file) to get a second-opinion review from Codex (gpt-5.4) against the actual codebase, then critically incorporate the feedback. Makes the Claude Code plan better via cross-model review. Trigger phrases include "send the plan to Codex", "have Codex review this plan", "get a second opinion on the plan".
+description: Use after drafting an implementation or research plan (in plan mode, or a ~/.claude/plans/ file) to get a second-opinion review from Codex against the actual codebase, then critically incorporate the feedback. Makes the Claude Code plan better via cross-model review. Trigger phrases include "send the plan to Codex", "have Codex review this plan", "get a second opinion on the plan".
 ---
 
 # codex-review-plan (Claude → Codex)
