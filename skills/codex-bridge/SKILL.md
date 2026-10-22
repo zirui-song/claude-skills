@@ -1,6 +1,6 @@
 ---
 name: codex-bridge
-description: Shared mechanics for calling the Codex CLI (gpt-5.4) to review plans. Reference for the codex-review-plan, review-codex-plan, and plan-debate skills — not invoked directly. Holds the wrapper invocation, reviewer prompt template, and gotchas.
+description: Shared mechanics for calling the Codex CLI to review plans. Reference for the codex-review-plan, review-codex-plan, and plan-debate skills — not invoked directly. Holds the wrapper invocation, reviewer prompt template, and gotchas.
 ---
 
 # Codex Bridge (shared mechanics)
@@ -32,35 +32,34 @@ bash ~/.claude/skills/codex-bridge/codex-exec.sh "$PROJECT_DIR" "$OUT" < "$PROMP
 ```
 
 **Always set a long Bash timeout (~600000 ms).** Effort defaults to the config's
-`model_reasoning_effort = "xhigh"` (see `~/.codex/config.toml`), which can take
-several minutes.
+`model_reasoning_effort` (see `~/.codex/config.toml`), which can take several minutes at
+high settings.
 
 ### Model (important — ChatGPT-account auth)
 
-This account authenticates Codex with a **ChatGPT account**, not an API key.
-Under that auth, CLI `exec` **rejects `gpt-5.4` and `gpt-5-codex`** ("not
-supported when using Codex with a ChatGPT account") — even though the config
-default is `gpt-5.4`. The wrapper therefore forces a working model:
+The wrapper does **not** force a model: `~/.codex/config.toml` decides. This matters if you
+authenticate Codex with a **ChatGPT account** rather than an API key, because `exec` rejects
+some models under that auth.
 
-- **Default: `gpt-5.5`** (most capable model that works here).
-- **Fast alternative: `gpt-5.4-mini`** — good for smoke tests.
-- Override the default with env `CODEX_REVIEW_MODEL=<model>` or by passing
-  `-m <model>` to the wrapper (your `-m` wins).
+- Override with env `CODEX_REVIEW_MODEL=<model>` or by passing `-m <model>` to
+  the wrapper (your `-m` wins).
+- Available slugs are listed in `~/.codex/models_cache.json`.
 
-If you ever see a "model is not supported" error, the model isn't allowed under
-ChatGPT-account auth — switch to `gpt-5.5` or `gpt-5.4-mini`.
+If you ever see "not supported when using Codex with a ChatGPT account", that
+model isn't allowed under this auth — pick another slug from the cache file.
 
 ### Speed overrides (optional extra args)
 
 - Faster turnaround: append `-c model_reasoning_effort=high` (or `=low` for smoke tests).
-- Or use the faster model: `-m gpt-5.4-mini`.
+- Or pass a lighter model with `-m <model>`.
 
 ## Binary location
 
-Codex is installed via the desktop app and is usually **not on PATH**. The
+Codex ships inside the ChatGPT desktop app and is usually **not on PATH**. The
 wrapper resolves it as `command -v codex` → fallback
-`/Applications/Codex.app/Contents/Resources/codex`. If it can't find it, it
-exits 127 with an install hint.
+`/Applications/ChatGPT.app/Contents/Resources/codex-cli/CodexCLI.app/Contents/MacOS/codex`
+→ fallback `/Applications/Codex.app/Contents/Resources/codex` (old standalone app).
+If it can't find any, it exits 127 with an install hint.
 
 ## Reviewer prompt template
 
